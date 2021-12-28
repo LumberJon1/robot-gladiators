@@ -24,10 +24,24 @@ Lose - Player health falls to 0
 
 var fight = function(enemyName) {
     
-    while(enemyHealth > 0) {
+    while(playerHealth > 0 && enemyHealth > 0) {
 
         var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
         console.log(promptFight);
+
+        //Evaluation if player chooses to skip
+        if (promptFight === "skip" || promptFight === "SKIP") {
+            //Confirm player's choice
+            var confirmSkip = window.confirm("Are you sure you want to skip this fight and forfeit 2 coins?");
+
+            //Message upon confirm
+            if (confirmSkip) {
+                window.alert("Skipped fight.  Subtracting 2 coins from inventory.");
+                playerMoney -= 2;
+                console.log("player money: ", playerMoney);
+                break;
+            }
+        }
 
         //Evaluation if player chooses to fight
         if (promptFight === "fight" || promptFight === "FIGHT") {
@@ -39,6 +53,7 @@ var fight = function(enemyName) {
             //Check enemy HP
             if (enemyHealth <= 0) {
                 window.alert(enemyName + " has died!");
+                break;
             }
 
             else {
@@ -52,29 +67,13 @@ var fight = function(enemyName) {
             //Check player HP
             if (playerHealth <= 0) {
                 window.alert(playerName + " has died!");
+                break;
             }
         
             else {
                 window.alert(playerName + " still has " + playerHealth + " HP left.");
             }
 
-        }
-
-        //Evaluation if player chooses to skip
-        else if (promptFight === "skip" || promptFight === "SKIP") {
-            //Confirm player's choice
-            var confirmSkip = window.confirm("Are you sure you want to skip this fight and forfeit 2 coins?");
-
-            //Message upon confirm
-            if (confirmSkip) {
-                window.alert("Skipped fight.  Subtracting 2 coins from inventory.");
-                playerMoney -= 2;
-                console.log("player money: ", playerMoney);
-            }
-            
-            else {
-                fight();
-            }
         }
 
         //Input validation for invalid inputs
