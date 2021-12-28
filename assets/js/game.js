@@ -23,68 +23,70 @@ Lose - Player health falls to 0
 */
 
 var fight = function(enemyName) {
-    // Alert players that they are starting the round
-    window.alert("Welcome to Robot Gladiators!");
-
-    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
-    console.log(promptFight);
-
-    //Evaluation if player chooses to fight
-    if (promptFight === "fight" || promptFight === "FIGHT") {
-
-        //Player's turn to attack enemy
-        enemyHealth -= playerAttack;
-        console.log("Enemy received", playerAttack, " damage from player.  New enemy HP: ", enemyHealth);
-
-        //Check enemy HP
-        if (enemyHealth <= 0) {
-            window.alert(enemyName + " has died!");
-        }
-
-        else {
-            window.alert(enemyName + " still has " + enemyHealth + " HP left.");
-        }
-
-        //Enemy's turn to attack player
-        playerHealth -= enemyAttack;
-        console.log("Player received", enemyAttack, " damage from enemy.  New player HP: ", playerHealth);
     
-        //Check player HP
-        if (playerHealth <= 0) {
-            window.alert(playerName + " has died!");
-        }
-    
-        else {
-            window.alert(playerName + " still has " + playerHealth + " HP left.");
-        }
+    while(enemyHealth > 0) {
 
-    }
+        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
+        console.log(promptFight);
 
-    //Evaluation if player chooses to skip
-    else if (promptFight === "skip" || promptFight === "SKIP") {
-        //Confirm player's choice
-        var confirmSkip = window.confirm("Are you sure you want to skip this fight and forfeit 2 coins?");
+        //Evaluation if player chooses to fight
+        if (promptFight === "fight" || promptFight === "FIGHT") {
 
-        //Message upon confirm
-        if (confirmSkip) {
-            window.alert("Skipped fight.  Subtracting 2 coins from inventory.");
-            playerMoney -= 2;
-            console.log("player money: ", playerMoney);
-        }
+            //Player's turn to attack enemy
+            enemyHealth -= playerAttack;
+            console.log("Enemy received", playerAttack, " damage from player.  New enemy HP: ", enemyHealth);
+
+            //Check enemy HP
+            if (enemyHealth <= 0) {
+                window.alert(enemyName + " has died!");
+            }
+
+            else {
+                window.alert(enemyName + " still has " + enemyHealth + " HP left.");
+            }
+
+            //Enemy's turn to attack player
+            playerHealth -= enemyAttack;
+            console.log("Player received", enemyAttack, " damage from enemy.  New player HP: ", playerHealth);
         
-        else {
-            fight();
-        }
-    }
+            //Check player HP
+            if (playerHealth <= 0) {
+                window.alert(playerName + " has died!");
+            }
+        
+            else {
+                window.alert(playerName + " still has " + playerHealth + " HP left.");
+            }
 
-    //Input validation for invalid inputs
-    else {
-        window.alert("Invalid option.")
+        }
+
+        //Evaluation if player chooses to skip
+        else if (promptFight === "skip" || promptFight === "SKIP") {
+            //Confirm player's choice
+            var confirmSkip = window.confirm("Are you sure you want to skip this fight and forfeit 2 coins?");
+
+            //Message upon confirm
+            if (confirmSkip) {
+                window.alert("Skipped fight.  Subtracting 2 coins from inventory.");
+                playerMoney -= 2;
+                console.log("player money: ", playerMoney);
+            }
+            
+            else {
+                fight();
+            }
+        }
+
+        //Input validation for invalid inputs
+        else {
+            window.alert("Invalid option.")
+        }   
     }
 
   };
 
 
 for (i = 0; i < enemyNames.length; i++) {
+    enemyHealth = 50;
     fight(enemyNames[i]);
 }
