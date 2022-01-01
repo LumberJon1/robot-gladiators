@@ -39,7 +39,7 @@ var fight = function(enemyName) {
                 //Message upon confirm
                 if (confirmSkip) {
                     window.alert("Skipped fight.  Subtracting 10 coins from inventory.");
-                    playerMoney -= 10;
+                    playerMoney = Math.max(0, playerMoney - 10);
                     console.log("player money: ", playerMoney);
                     break;
                 }
@@ -52,8 +52,9 @@ var fight = function(enemyName) {
         //Evaluation if player chooses to fight
 
         //Player's turn to attack enemy
-        enemyHealth -= playerAttack;
-        console.log("Enemy received", playerAttack, " damage from player.  New enemy HP: ", enemyHealth);
+        var damage = randomNumber(playerAttack - 3, playerAttack);
+        enemyHealth = Math.max(0, enemyHealth - damage);
+        console.log("Enemy received", damage, " damage from player.  New enemy HP: ", enemyHealth);
 
         //Check enemy HP
         if (enemyHealth <= 0) {
@@ -66,8 +67,10 @@ var fight = function(enemyName) {
         }
 
         //Enemy's turn to attack player
-        playerHealth -= enemyAttack;
-        console.log("Player received", enemyAttack, " damage from enemy.  New player HP: ", playerHealth);
+        debugger;
+        var damage = randomNumber(enemyAttack - 3, enemyAttack);
+        playerHealth = Math.max(0, playerHealth - damage);
+        console.log("Player received", damage, " damage from enemy.  New player HP: ", playerHealth);
     
         //Check player HP
         if (playerHealth <= 0) {
@@ -96,8 +99,8 @@ var startGame = function() {
             // pick new enemy to fight based on the index of the enemyNames array
             var pickedEnemyName = enemyNames[i];
     
-            // reset enemyHealth before starting new fight
-            enemyHealth = 50;
+            // Set enemy health to a random value between 40 and 60
+            enemyHealth = randomNumber(40, 60);
     
             // use debugger to pause script from running and check what's going on at that moment in the code
             // debugger;
@@ -251,7 +254,12 @@ var shop = function() {
             break;
 
     }
+};
 
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return value;
 };
 
 startGame();
