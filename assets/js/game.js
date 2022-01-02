@@ -25,6 +25,8 @@ var fightOrSkip = function() {
     if (promptFight === "" || promptFight === null) {
         fightOrSkip();
     }
+
+    //Currently accepts values other than "fight" or "skip"
   
     // if player picks "skip" confirm and then stop the loop
     //First convert to lower to ease comparison
@@ -167,7 +169,7 @@ var fight = function(enemy) {
 //For loop to execute the fight function for each each enemy until dead or skipped
 var startGame = function() {
 
-    //Initialize player variables
+    //Initialize player variables and proLimpt for a new name
     playerInfo.reset();
 
     for (i = 0; i < enemyInfo.length; i++) {
@@ -210,6 +212,24 @@ var startGame = function() {
 var endGame = function() {
     if (playerInfo.health > 0) {
         window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
+        
+        //Check high score and set to 0 if none exists.
+        var highScore = localStorage.getItem("highScore");
+        if (highScore === null) {
+            highScore = 0;
+        }
+
+        //Evaluate player score against high score
+        if (playerInfo.money > highScore) {
+            localStorage.setItem("highScore", playerInfo.money);
+            localStorage.setItem("name", playerInfo.name);
+            window.alert("You achieved a new high score of "+playerInfo.money+"!");
+        }
+        //Display if the player did not reach high score
+        else {
+            window.alert("You did not beat the high score.\nHigh Score: "+
+            localStorage.getItem("name")+": "+highScore);
+        }
     } 
     else {
         window.alert("You've lost your robot in battle.");
