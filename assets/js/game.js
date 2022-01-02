@@ -228,11 +228,19 @@ var shop = function() {
         case "REFILL":
             playerInfo.refillHealth();
             break;
+
+        case "1":
+            playerInfo.refillHealth();
+            break;
         
         //Upgrade cases
         case "upgrade":
         case "Upgrade":
         case "UPGRADE":
+            playerInfo.upgradeAttack();
+            break;
+
+        case "2":
             playerInfo.upgradeAttack();
             break;
         
@@ -249,6 +257,9 @@ var shop = function() {
             window.alert("Leaving the store...");
             break;
 
+        case "3":
+            window.alert("Leaving the store...");
+            break;
         
         //Default case to catch unexpected input
         default:
