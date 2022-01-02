@@ -5,9 +5,21 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+//Name getter and prompt loop to exclude null values
+var getPlayerName = function() {
+    var name = "";
+
+    while (name === "" || name === null) {
+        name = prompt("Enter a name for your robot.");
+        console.log("Name:", name);
+    }
+    
+    return name;
+}
+
 //Player info object for use in functions
 playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
@@ -35,7 +47,7 @@ playerInfo = {
           else {
             window.alert("You don't have enough money!");
           }
-    }
+    },
 };
 
 //Enemy robot array
@@ -63,10 +75,12 @@ console.log(playerInfo.name+": ", "Attack ", playerInfo.attack, "HP ", playerInf
 var fight = function(enemy) {
     console.log("Fighting:", enemy);
     
-    while(playerInfo.health > 0 && enemyHealth > 0) {
+    while(playerInfo.health > 0 && enemy.health > 0) {
+        console.log(playerInfo);
+        console.log(enemyInfo);
 
         var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
-        console.log(promptFight);
+        console.log("Prompt entered: ", promptFight);
 
         //Evaluation if player chooses to skip
         if (promptFight === "skip" || promptFight === "SKIP") {
@@ -92,25 +106,26 @@ var fight = function(enemy) {
 
         //Player's turn to attack enemy
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        enemyInfo.health = Math.max(0, enemyInfo.health - damage);
-        console.log("Enemy received", damage, " damage from player.  New enemy HP: ", enemyInfo.health);
-
+        console.log("player dealt damage: ", damage);
+        enemy.health = Math.max(0, enemy.health - damage);
+        console.log("deducted health from enemy.  New HP: ", enemy.health);
+       
         //Check enemy HP
-        if (enemyInfo.health <= 0) {
-            window.alert(enemyInfo.name + " has died!");
+        if (enemy.health <= 0) {
+            window.alert(enemy.name + " has died!");
             playerInfo.money += 20;
             break;
         }
         else {
-            window.alert(enemyInfo.name + " still has " + enemyInfo.health + " HP left.");
+            window.alert(enemy.name + " still has " + enemy.health + " HP left.");
         }
 
         //Enemy's turn to attack player
-        debugger;
-        var damage = randomNumber(enemyInfo.attack - 3, enemyInfo.attack);
+        var damage = randomNumber(enemy.attack - 3, enemy.attack);
+        console.log("Player took damage from enemy: ", damage);
         playerInfo.health = Math.max(0, playerInfo.health - damage);
-        console.log("Player received", damage, " damage from enemy.  New player HP: ", playerInfo.health);
-    
+        console.log("Deducted health from player.  New HP: ", playerInfo.health);
+        
         //Check player HP
         if (playerInfo.health <= 0) {
             window.alert(playerInfo.name + " has died!");
@@ -132,18 +147,19 @@ var startGame = function() {
 
         if (playerInfo.health > 0) {
             window.alert("Welcome to Robot Gladiators! - Round "+(i + 1)+"!");
+            debugger;
     
             // pick new enemy to fight based on the index of the enemyInfo array
             var pickedEnemyObj = enemyInfo[i];
+            console.log("Picked enemy obj.: ", pickedEnemyObj);
     
             // Set enemy health to a random value between 40 and 60
             pickedEnemyObj.health = randomNumber(40, 60);
-    
-            // use debugger to pause script from running and check what's going on at that moment in the code
-            // debugger;
-    
+            console.log("Enemy health initialized randomly to ", pickedEnemyObj.health);
+
             // pass the pickedEnemyName variable's value into the fight function, where it will assume the value of the enemyName parameter
             fight(pickedEnemyObj);
+            console.log("Passing enemy obj index into fight function...");
 
             //Allow entry to the shop if this is not the last round and player is still alive
             if (i < enemyInfo.length - 1 && playerInfo.health > 0) {
