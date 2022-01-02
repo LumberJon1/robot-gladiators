@@ -17,6 +17,37 @@ var getPlayerName = function() {
     return name;
 }
 
+//Fight/Skip function
+var fightOrSkip = function() {
+    // ask player if they'd like to fight or skip using fightOrSkip function
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
+  
+    if (promptFight === "" || promptFight === null) {
+        fightOrSkip();
+    }
+  
+    // if player picks "skip" confirm and then stop the loop
+    //First convert to lower to ease comparison
+    promptFight = promptFight.toLowerCase();
+
+    if (promptFight === "skip") {
+      // confirm player wants to skip
+      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+  
+      //If they confirm, skip and enter shop
+      if (confirmSkip) {
+        window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+        playerInfo.money -= 7;
+
+        return true;
+      }
+
+
+    }
+
+    return false;
+  }
+
 //Player info object for use in functions
 playerInfo = {
     name: getPlayerName(),
@@ -79,27 +110,10 @@ var fight = function(enemy) {
         console.log(playerInfo);
         console.log(enemyInfo);
 
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle?\nEnter \'FIGHT\' or \'SKIP\'.");
-        console.log("Prompt entered: ", promptFight);
+        debugger;
 
-        //Evaluation if player chooses to skip
-        if (promptFight === "skip" || promptFight === "SKIP") {
-
-            //Check if player has enough money to skip, and confirm choice or prompt error message
-            if (playerInfo.money >= 10) {
-                var confirmSkip = window.confirm("Are you sure you want to skip this fight and forfeit 10 coins?");
-
-                //Message upon confirm
-                if (confirmSkip) {
-                    window.alert("Skipped fight.  Subtracting 10 coins from inventory.");
-                    playerInfo.money = Math.max(0, playerInfo.money - 10);
-                    console.log("player money: ", playerInfo.money);
-                    break;
-                }
-            }
-            else {
-                window.alert("You don't have enough money!");
-            }
+        if (fightOrSkip()) {
+            break;
         }
 
         //Evaluation if player chooses to fight
@@ -147,7 +161,6 @@ var startGame = function() {
 
         if (playerInfo.health > 0) {
             window.alert("Welcome to Robot Gladiators! - Round "+(i + 1)+"!");
-            debugger;
     
             // pick new enemy to fight based on the index of the enemyInfo array
             var pickedEnemyObj = enemyInfo[i];
