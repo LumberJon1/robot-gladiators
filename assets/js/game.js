@@ -104,50 +104,63 @@ var enemyInfo = [
 console.log(playerInfo.name+": ", "Attack ", playerInfo.attack, "HP ", playerInfo.health);
 
 var fight = function(enemy) {
-    console.log("Fighting:", enemy);
+
+    //Track the initiative order
+    var isPlayerTurn = true;
+
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    }
     
     while(playerInfo.health > 0 && enemy.health > 0) {
         console.log(playerInfo);
         console.log(enemyInfo);
 
-        debugger;
+        if (isPlayerTurn) {
 
-        if (fightOrSkip()) {
-            break;
-        }
-
-        //Evaluation if player chooses to fight
-
-        //Player's turn to attack enemy
-        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        console.log("player dealt damage: ", damage);
-        enemy.health = Math.max(0, enemy.health - damage);
-        console.log("deducted health from enemy.  New HP: ", enemy.health);
-       
-        //Check enemy HP
-        if (enemy.health <= 0) {
-            window.alert(enemy.name + " has died!");
-            playerInfo.money += 20;
-            break;
-        }
-        else {
-            window.alert(enemy.name + " still has " + enemy.health + " HP left.");
-        }
-
-        //Enemy's turn to attack player
-        var damage = randomNumber(enemy.attack - 3, enemy.attack);
-        console.log("Player took damage from enemy: ", damage);
-        playerInfo.health = Math.max(0, playerInfo.health - damage);
-        console.log("Deducted health from player.  New HP: ", playerInfo.health);
         
-        //Check player HP
-        if (playerInfo.health <= 0) {
-            window.alert(playerInfo.name + " has died!");
-            break;
-        }  
+            //Call the fight or skip prompt
+            if (fightOrSkip()) {
+                break;
+            }
+
+            //Evaluation if player chooses to fight
+
+            //Player's turn to attack enemy
+            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            console.log("player dealt damage: ", damage);
+            enemy.health = Math.max(0, enemy.health - damage);
+            console.log("deducted health from enemy.  New HP: ", enemy.health);
+        
+            //Check enemy HP
+            if (enemy.health <= 0) {
+                window.alert(enemy.name + " has died!");
+                playerInfo.money += 20;
+                break;
+            }
+            else {
+                window.alert(enemy.name + " still has " + enemy.health + " HP left.");
+            }
+        }
         else {
-            window.alert(playerInfo.name + " still has " + playerInfo.health + " HP left.");
-        }   
+            //Enemy's turn to attack player
+            var damage = randomNumber(enemy.attack - 3, enemy.attack);
+            console.log("Player took damage from enemy: ", damage);
+            playerInfo.health = Math.max(0, playerInfo.health - damage);
+            console.log("Deducted health from player.  New HP: ", playerInfo.health);
+            
+            //Check player HP
+            if (playerInfo.health <= 0) {
+                window.alert(playerInfo.name + " has died!");
+                break;
+            }  
+            else {
+                window.alert(playerInfo.name + " still has " + playerInfo.health + " HP left.");
+            } 
+        }
+
+        //Switch the state of isPlayerTurn to reverse turn order
+        isPlayerTurn = !isPlayerTurn;
     }
 };
 
